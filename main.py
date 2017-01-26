@@ -16,6 +16,42 @@
 #
 import webapp2
 import caesar
+def build_page(textarea_content):
+    rotation_label = "<label style='color:rgb(198,12,100)'> Rotate by : </label>"
+    rotation_input = "<input type ='number' name='rotation'/>"
+    message_label = "<label style='color:rgb(198,12,100)'> Please enter a message : </label>"
+#What we are saying,name='message', is that, when this form gets submitted,I
+#want the "HTTP   request, that is about to be sent out", to have a
+#KEY VALUE pair, where the keyname is message and the value is, the content
+# that is typed into this textarea
+    textarea = "<textarea name ='message'>" +textarea_content+ "</textarea>"
+    submit = "<input  type ='submit'/>"
+    form = ("<form style='background-color:rgb(240,200,255)' method ='post'>"+
+            rotation_label + rotation_input +"<br><br>" +
+            message_label + textarea + "<br><br>"+
+            submit +
+            "</form>")
+    header = "<h2 style='color:rgb(198,12,100);background-color:rgb(240,200,255)'> Web Caesar</h2><br>"
+    return header + form
+class MainHandler(webapp2.RequestHandler):
+    def get(self):
+        content = build_page("")#parameter is empty strng since user has entered nothing right now
+        self.response.write(content)
+    def post(self):
+        #To access the request from user that is coming
+        # in from textarea when user hits submit button
+        message = self.request.get("message")
+        rotation = int(self.request.get("rotation"))
+        encrypted_message = caesar.encrypt(message,rotation)
+        content = build_page(encrypted_message)
+        self.response.write(content)
+app = webapp2.WSGIApplication([
+    ('/', MainHandler)
+], debug=True)
+
+'''
+import webapp2
+import caesar
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         rot_label ="<label> Rotate by : </label>"
@@ -27,11 +63,12 @@ class MainHandler(webapp2.RequestHandler):
 # that is typed into this textarea
         textarea = "<textarea name ='message'></textarea>"
         submit = "<input  type ='submit'/>"
-        form = ("<form method ='post'>"+
+        form = ("<form style='background-color:rgb' method ='post'>"+
                 rot_label + rotation_input +"<br><br>" +
                 message_label + textarea + "<br><br>"+
                 submit +"</form>")
-        header = "<h2>Web Caesar</h2>"
+        header = "<h2 style='color:rgb(198,12,100)'>Web Caesar</h2>"
+
         self.response.write(header + form)
 
     def post(self):
@@ -47,6 +84,8 @@ app = webapp2.WSGIApplication([
 ], debug=True)
 
 '''
+# THIS IS AN OLDER VERSION OF THIS PROGRAM
+"""
 import webapp2
 import caesar
 class MainHandler(webapp2.RequestHandler):
@@ -72,4 +111,4 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler)
 ], debug=True)
 
-'''
+"""
