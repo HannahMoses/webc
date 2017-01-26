@@ -18,6 +18,33 @@ import webapp2
 import caesar
 class MainHandler(webapp2.RequestHandler):
     def get(self):
+        rotation_input = "<input type ='number' name='rotation'/>"
+#What we are saying,name='message', is that, when this form gets submitted,I
+#want the "HTTP   request, that is about to be sent out", to have a
+#KEY VALUE pair, where the keyname is message and the value is, the content
+# that is typed into this textarea
+        textarea = "<textarea name ='message'></textarea>"
+        submit = "<input  type ='submit'/>"
+        form = "<form method ='post'>"+ rotation_input + textarea + "<br><br>"+submit +"</form>"
+        self.response.write(form)
+
+    def post(self):
+        #To access the request from user that is coming
+        # in from textarea when user hits submit button
+        message = self.request.get("message")
+        rotation = int(self.request.get("rotation"))
+        encrypted_message = caesar.encrypt(message,rotation)
+        self.response.out.write("Secret message : " + encrypted_message)
+
+app = webapp2.WSGIApplication([
+    ('/', MainHandler)
+], debug=True)
+
+'''
+import webapp2
+import caesar
+class MainHandler(webapp2.RequestHandler):
+    def get(self):
 #What we are saying,name='message', is that, when this form gets submitted,I
 #want the "HTTP   request, that is about to be sent out", to have a
 #KEY VALUE pair, where the keyname is message and the value is, the content
@@ -39,21 +66,4 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler)
 ], debug=True)
 
-'''
-import webapp2
-import caesar
-class MainHandler(webapp2.RequestHandler):
-    def get(self):
-        message = 'Hellooooooo world!'
-        encrypted_message = caesar.encrypt(message,13)
-        textarea = "<textarea>"+ encrypted_message +"</textarea>"
-        submit = "<input  type ='submit'/>"
-        form = "<form>"+ textarea + "<br><br>"+submit +"</form>"
-        self.response.write(form)
-    def post(self):
-        self.response.out.write("Thankyou for visiting my website !")
-
-app = webapp2.WSGIApplication([
-    ('/', MainHandler)
-], debug=True)
 '''
