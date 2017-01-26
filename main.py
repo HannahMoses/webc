@@ -14,32 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import webapp2
-import caesar
-class MainHandler(webapp2.RequestHandler):
-    def get(self):
-        message = 'Iellooooooo world!'
-        encrypted_message = caesar.encrypt(message,13)
-        self.response.write("<textarea>"+ encrypted_message +"</textarea>")
-
-app = webapp2.WSGIApplication([
-    ('/', MainHandler)
-], debug=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''
-
 #!/usr/bin/env python
 #
 # Copyright 2007 Google Inc.
@@ -60,9 +34,27 @@ import webapp2
 import caesar
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        message = "Hellooooooo world!"
+        message = 'Hellooooooo world!'
         encrypted_message = caesar.encrypt(message,13)
-        self.response.write(encrypted_message)
+        textarea = "<textarea>"+ encrypted_message +"</textarea>"
+        submit = "<input  type ='submit'/>"
+        form = "<form>"+ textarea + "<br><br>"+submit +"</form>"
+        self.response.write(form)
+
+app = webapp2.WSGIApplication([
+    ('/', MainHandler)
+], debug=True)
+
+
+
+'''
+import webapp2
+import caesar
+class MainHandler(webapp2.RequestHandler):
+    def get(self):
+        message = 'Iellooooooo world!'
+        encrypted_message = caesar.encrypt(message,13)
+        self.response.write("<textarea>"+ encrypted_message +"</textarea>")
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
